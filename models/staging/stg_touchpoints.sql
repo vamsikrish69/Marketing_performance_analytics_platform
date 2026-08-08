@@ -1,7 +1,11 @@
 select
+    touchpoint_id,
     customer_id,
-    segment,
-    lifecycle_stage,
-    cast(signup_date as date) as signup_date,
-    region
-from {{ ref('customers') }}
+    campaign_id,
+    cast(touchpoint_date as date) as touchpoint_date,
+    channel
+from {{ ref('marketing_touchpoints') }}
+qualify row_number() over (
+    partition by touchpoint_id
+    order by touchpoint_date desc
+) = 1
