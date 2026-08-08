@@ -1,18 +1,15 @@
-with first_touch as (
-    select
-        customer_id,
-        campaign_id as first_touch_campaign_id,
-        touchpoint_date as first_touch_date
-    from {{ ref('int_user_journey') }}
-    where touch_position = 1
-)
+version: 2
 
-select
-    c.conversion_id,
-    c.customer_id,
-    ft.first_touch_campaign_id,
-    c.conversion_date,
-    c.revenue
-from {{ ref('stg_conversions') }} c
-left join first_touch ft
-    on c.customer_id = ft.customer_id
+models:
+  - name: int_campaign_spend_daily
+    description: Daily spend rolled up by campaign.
+  - name: int_campaign_revenue_daily
+    description: Daily conversion revenue rolled up by campaign.
+  - name: int_user_journey
+    description: Ordered touchpoints per customer with position and total-touch count.
+  - name: int_attribution_first_touch
+    description: Each conversion linked to the customer's first-ever touchpoint.
+  - name: int_attribution_last_touch
+    description: Each conversion linked to the last touchpoint within a 30-day window.
+  - name: int_attribution_linear
+    description: Conversion revenue split evenly across all touchpoints in the 30-day window.
