@@ -1,0 +1,11 @@
+customer_id,segment,lifecycle_stage,signup_date,region
+CUST001,prospect,new,2026-01-15,NA
+CUST002,loyal,retained,2025-03-10,NA
+CUST003,prospect,new,2026-02-20,EU
+CUST004,churn_risk,retained,2024-11-05,EU
+CUST005,loyal,retained,2023-08-01,APAC
+CUST006,prospect,new,2026-03-01,NA
+CUST007,loyal,retained,2025-06-15,APAC
+CUST008,prospect,new,2026-04-10,EU
+CUST009,churn_risk,retained,2024-09-01,NA
+CUST010,loyal,retained,2022-12-01,APAC
