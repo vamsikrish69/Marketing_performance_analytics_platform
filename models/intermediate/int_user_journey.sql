@@ -1,6 +1,13 @@
 select
+    customer_id,
     campaign_id,
-    conversion_date as revenue_date,
-    sum(revenue) as daily_revenue
-from {{ ref('stg_conversions') }}
-group by 1, 2
+    channel,
+    touchpoint_date,
+    row_number() over (
+        partition by customer_id
+        order by touchpoint_date
+    ) as touch_position,
+    count(*) over (
+        partition by customer_id
+    ) as total_touches
+from {{ ref('stg_touchpoints') }}
