@@ -1,11 +1,8 @@
 select
-    spend_id,
     campaign_id,
-    cast(spend_date as date) as spend_date,
-    cast(spend_amount as numeric(10,2)) as spend_amount
-from {{ ref('ad_spend') }}
-where spend_amount is not null
-qualify row_number() over (
-    partition by spend_id
-    order by spend_date desc
-) = 1
+    campaign_name,
+    channel,
+    cast(start_date as date) as start_date,
+    cast(end_date as date)   as end_date,
+    cast(budget as numeric(12,2)) as budget
+from {{ ref('campaigns') }}
