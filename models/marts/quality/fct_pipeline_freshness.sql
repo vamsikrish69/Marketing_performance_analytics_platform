@@ -1,13 +1,21 @@
-version: 2
+select
+    'ad_spend' as source_name,
+    max(spend_date) as latest_date,
+    datediff('day', max(spend_date), current_date()) as days_stale
+from {{ ref('stg_ad_spend') }}
 
-models:
-  - name: fct_data_quality_scorecard
-    description: >
-      Point-in-time snapshot of key data quality checks — null spend,
-      orphaned foreign keys, and revenue reconciliation between raw
-      conversions and the campaign performance mart.
+union all
 
-  - name: fct_pipeline_freshness
-    description: >
-      Latest loaded date and days-stale for each core source, used to
-      answer "can I trust today's numbers?"
+select
+    'conversions' as source_name,
+    max(conversion_date) as latest_date,
+    datediff('day', max(conversion_date), current_date()) as days_stale
+from {{ ref('stg_conversions') }}
+
+union all
+
+select
+    'touchpoints' as source_name,
+    max(touchpoint_date) as latest_date,
+    datediff('day', max(touchpoint_date), current_date()) as days_stale
+from {{ ref('stg_touchpoints') }}
